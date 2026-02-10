@@ -1,0 +1,13 @@
+package io.github.thongto.classregistrationsystem;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class ClassRegistrationSystemApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
