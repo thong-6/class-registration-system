@@ -15,16 +15,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "role")
+@Table(name = "classroom")
 @Getter
 @Setter
-public class Role {
+public class ClassRoom {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "role_seq")
-    @SequenceGenerator(name = "role_seq", sequenceName = "role_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "classroom_seq")
+    @SequenceGenerator(name = "classroom_seq", sequenceName = "classroom_seq", allocationSize = 1)
     private Long id;
-    @Column(name = "role_name", nullable = false, unique = true)
-    private String roleName;
-    @OneToMany(mappedBy = "role", fetch = FetchType.LAZY)
-    private List<User> users;
+    @Column(name = "room_number")
+    private String roomNumber;
+    private String building;
+    private Integer capacity;
+    @OneToMany(mappedBy = "room", fetch = FetchType.LAZY)
+    private List<Schedule> schedules;
 }
