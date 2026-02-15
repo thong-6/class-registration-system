@@ -21,7 +21,7 @@ import lombok.Setter;
 @Setter
 public class Announcement {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "announcement")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "announcement_seq")
     @SequenceGenerator(name = "announcement_seq", sequenceName = "announcement_seq", allocationSize = 1)
     private Long id;
     private String title;

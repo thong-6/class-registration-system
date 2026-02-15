@@ -1,0 +1,2 @@
+ALTER TABLE refresh_token
+ALTER COLUMN user_id TYPE BIGINT;
