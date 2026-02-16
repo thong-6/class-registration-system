@@ -43,17 +43,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // Configures an in-memory user for testing
-    @Bean
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.builder()
-                .username("user")
-                .password("{noop}password") // {noop} indicates no password encoding
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(user);
-    }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
