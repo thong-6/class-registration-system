@@ -4,14 +4,25 @@ import ProtectedRoute from './components/auth/ProtectedRoute';
 import RoleRoute from './components/auth/RoleRoute';
 import LoginPage from './features/auth/LoginPage';
 import RegisterPage from './features/auth/RegisterPage';
+import PublicRoute from './components/auth/PublicRoute';
 
 
 const App = () => {
   return (
     <Routes>
       {/*public route*/}
-      <Route path='/login' element={<LoginPage></LoginPage>}></Route>
-      <Route path='/register' element={<RegisterPage></RegisterPage>}></Route>
+      <Route
+      element={
+        <PublicRoute>
+ 
+        </PublicRoute>
+      }
+      >
+        <Route path='/login' element={<LoginPage></LoginPage>}></Route>
+        <Route path='/register' element={<RegisterPage></RegisterPage>}></Route>
+
+      </Route>
+      
       {/*student*/}
       <Route
         element={

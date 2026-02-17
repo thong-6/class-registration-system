@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Outlet, Link, useLocation } from 'react-router-dom';
+import { Outlet, Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Users, 
@@ -10,11 +10,16 @@ import {
   Menu, 
   Bell 
 } from 'lucide-react'; // Giả sử dùng thư viện icon này
+import { logout } from '../../services/authService';
 
 const AdminLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const location = useLocation();
-
+  const navigate = useNavigate();
+  const handleLogout = ()=>{
+    logout();
+    navigate("/login")
+  }
   // Danh sách menu cho Admin
   const menuItems = [
     { path: '/admin/dashboard', label: 'Tổng quan', icon: <LayoutDashboard size={20} /> },
@@ -68,7 +73,9 @@ const AdminLayout = () => {
 
         {/* Footer Sidebar (Logout) */}
         <div className="p-4 border-t border-slate-700">
-          <button className="flex items-center gap-3 text-slate-300 hover:text-red-400 w-full">
+          <button 
+          onClick={handleLogout}
+          className="flex items-center gap-3 text-slate-300 hover:text-red-400 w-full">
             <LogOut size={20} />
             <span className={`${!isSidebarOpen && 'hidden'}`}>Đăng xuất</span>
           </button>
