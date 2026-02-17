@@ -3,6 +3,7 @@ import AdminLayout from './components/layout/AdminLayout';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import RoleRoute from './components/auth/RoleRoute';
 import LoginPage from './features/auth/LoginPage';
+import RegisterPage from './features/auth/RegisterPage';
 
 
 const App = () => {
@@ -10,6 +11,7 @@ const App = () => {
     <Routes>
       {/*public route*/}
       <Route path='/login' element={<LoginPage></LoginPage>}></Route>
+      <Route path='/register' element={<RegisterPage></RegisterPage>}></Route>
       {/*student*/}
       <Route
         element={
