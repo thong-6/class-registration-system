@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import io.github.thongto.classregistrationsystem.auth.dto.AuthResponse;
 import io.github.thongto.classregistrationsystem.auth.dto.LoginRequest;
 import io.github.thongto.classregistrationsystem.auth.dto.RegisterRequest;
+import io.github.thongto.classregistrationsystem.auth.dto.UserInfo;
 import io.github.thongto.classregistrationsystem.entity.Role;
 import io.github.thongto.classregistrationsystem.entity.User;
 import io.github.thongto.classregistrationsystem.repository.RoleRepository;
@@ -42,8 +43,9 @@ public class AuthService {
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(req.getUsername(), req.getPassword()));
         User user = userRepository.findByUsername(req.getUsername()).get();
+        UserInfo userInfo = new UserInfo(user.getUsername(), user.getRole().getRoleName());
         String token = jwtService.generateAccessToken(user);
-        return new AuthResponse(token);
+        return new AuthResponse(userInfo, token);
     }
 
 }

@@ -29,7 +29,6 @@ const LoginPage: React.FC = () => {
   // 3. Sử dụng React.SyntheticEvent để tránh lỗi deprecated
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Login data:', formData);
 
     try {
         await login(formData.username, formData.password);

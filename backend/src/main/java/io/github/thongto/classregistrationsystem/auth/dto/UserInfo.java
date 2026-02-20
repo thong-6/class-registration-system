@@ -1,11 +1,12 @@
 package io.github.thongto.classregistrationsystem.auth.dto;
 
+import io.github.thongto.classregistrationsystem.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class AuthResponse {
-    private UserInfo user;
-    private String token;
+public class UserInfo {
+    private String username;
+    private String role;
 }

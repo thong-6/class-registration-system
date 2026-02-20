@@ -23,6 +23,7 @@ const AdminLayout = () => {
   // Danh sách menu cho Admin
   const menuItems = [
     { path: '/admin/dashboard', label: 'Tổng quan', icon: <LayoutDashboard size={20} /> },
+    { path: '/admin/semester', label: 'Quản lý học kỳ', icon: <LayoutDashboard size={20} /> },
     { path: '/admin/students', label: 'Quản lý Sinh viên', icon: <Users size={20} /> },
     { path: '/admin/instructors', label: 'Quản lý Giảng viên', icon: <Users size={20} /> },
     { path: '/admin/courses', label: 'Quản lý Học phần', icon: <BookOpen size={20} /> },

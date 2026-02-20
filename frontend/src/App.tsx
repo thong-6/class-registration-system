@@ -5,6 +5,9 @@ import RoleRoute from './components/auth/RoleRoute';
 import LoginPage from './features/auth/LoginPage';
 import RegisterPage from './features/auth/RegisterPage';
 import PublicRoute from './components/auth/PublicRoute';
+import StudentLayout from './components/layout/StudentLayout';
+import { Divide } from 'lucide-react';
+import AdminSemestersPage from './features/admin/pages/AdminSemesterPage';
 
 
 const App = () => {
@@ -28,21 +31,33 @@ const App = () => {
         element={
           <ProtectedRoute>
             <RoleRoute role = "Student">
+              <StudentLayout/>
             </RoleRoute>
           </ProtectedRoute>
         }
       >
-
+         <Route path="/" element={<div>Trang chủ (Login)</div>} />
       </Route>
       {/*instructor*/}
       {/*admin*/}
-
-
-      <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<div>Admin Home</div>} />
+      <Route
+        element={
+          <ProtectedRoute>
+            <RoleRoute role = "Admin">
+              <AdminLayout/>
+            </RoleRoute>
+          </ProtectedRoute>
+        }
+      >
+        <Route path='/admin' element={<div>Admin Home</div>}></Route>
+      <Route path='/admin/semester' element={<AdminSemestersPage/>}></Route>
       </Route>
+
+      {/* <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<div>Admin Home</div>} />
+      </Route> */}
       
-      <Route path="/" element={<div>Trang chủ (Login)</div>} />
+      {/* <Route path="/" element={<div>Trang chủ (Login)</div>} /> */}
     </Routes>
   );
 };
