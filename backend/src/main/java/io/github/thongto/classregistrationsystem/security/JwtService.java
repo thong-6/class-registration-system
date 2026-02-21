@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -18,6 +19,8 @@ public class JwtService {
     private String secret;
     @Value("${jwt.access-expiration}")
     private Long accessExpiration;
+    @Value("${jwt.refresh-expiration}")
+    private Long refreshExpiration;
 
     public String generateAccessToken(UserDetails user) {
         return Jwts.builder()
@@ -27,6 +30,15 @@ public class JwtService {
                         .toList())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + accessExpiration))
+                .signWith(getKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String generateRefreshToken(UserDetails user) {
+        return Jwts.builder()
+                .setSubject(user.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -52,5 +64,14 @@ public class JwtService {
 
     private Key getKey() {
         return Keys.hmacShaKeyFor(secret.getBytes());
+    }
+
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parserBuilder().setSigningKey(getKey()).build().parseClaimsJws(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }

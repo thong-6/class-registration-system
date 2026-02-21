@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import axiosClient from "./axiosClient";
+import { decodeToken } from "./jwt";
 
 export const register = async (
   username: string,
@@ -20,17 +20,28 @@ export const login = async (username: string, password: string) => {
     password,
   });
 
-  const token = res.data.token;
-  const user = res.data.user;
-  localStorage.setItem("token", token);
+  const accessToken = res.data.accessToken;
+  localStorage.setItem("accessToken", accessToken);
+  const payload: any = decodeToken(accessToken);
+  console.log(payload)
+  const user ={
+    username: payload.sub,
+    role: payload.roles[0]
+  }
   localStorage.setItem("user", JSON.stringify(user));
 
   return res.data;
 };
 
-
+export const refreshAccessToken = async () =>{
+  const res = await axiosClient.post("/auth/refresh");
+  const newToken = res.data.accessToken;
+  localStorage.setItem("accessToken", newToken);
+  return newToken;
+}
 
 export const logout = () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
+  window.location.href = "/login";
 };

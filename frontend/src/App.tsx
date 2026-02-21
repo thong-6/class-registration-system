@@ -7,7 +7,7 @@ import RegisterPage from './features/auth/RegisterPage';
 import PublicRoute from './components/auth/PublicRoute';
 import StudentLayout from './components/layout/StudentLayout';
 import { Divide } from 'lucide-react';
-import AdminSemestersPage from './features/admin/pages/AdminSemesterPage';
+import AdminSemestersPage from './features/admin/semester/AdminSemesterPage';
 
 
 const App = () => {

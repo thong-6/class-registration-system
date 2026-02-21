@@ -13,7 +13,7 @@ public class SemesterDTO {
     private Integer year;
     private Integer term;
     private LocalDate startDate;
-    private LocalDate enDate;
+    private LocalDate endDate;
     private LocalDate registrationStart;
     private LocalDate registrationEnd;
     private Boolean isCurrent;
