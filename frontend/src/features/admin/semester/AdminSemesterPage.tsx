@@ -3,7 +3,7 @@ import { Plus, Search } from 'lucide-react';
 import { Semester } from '../../../type/semester';
 import SemesterTable from './component/SemesterTable';
 import SemesterModal from './component/SemesterModel';
-import { getAllSemester } from '../../../services/semesterService';
+import { createASemester, deleteASemester, getAllSemester, updateASemester } from '../../../services/semesterService';
 
 
 
@@ -41,19 +41,36 @@ const AdminSemestersPage: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleDelete = (id: number) => {
+  const handleDelete = async (id: number) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa học kỳ này không?')) {
-      setSemesters(semesters.filter(s => s.id !== id));
+      try {
+        await deleteASemester(id);
+        setSemesters(semesters.filter(s => s.id !== id));
+
+        return;
+      } catch (error) {
+        alert('Cannot delete this semester')
+      }
     }
   };
 
-  const handleSaveData = (formData: Partial<Semester>, id?: number) => {
+  const handleSaveData = async (formData: Partial<Semester>, id?: number) => {
     if (id) {
-      setSemesters(semesters.map(s => s.id === id ? { ...formData, id } as Semester : s));
+      
+      try {
+        const updated = await updateASemester(id, formData);
+        setSemesters(semesters.map(s => s.id === id ? updated : s));
+      } catch (error) {
+        alert('Cannot edit this semester')
+      }
     } else {
-      const newId = Math.floor(Math.random() * 10000); 
-      const newSemester: Semester = { ...formData, id: newId } as Semester;
-      setSemesters([...semesters, newSemester]);
+      try {
+        const created = await createASemester(formData);
+        setSemesters([...semesters, created]);
+      } catch (error) {
+        alert('Cannot create a semester now')
+      }
+      
     }
     setIsModalOpen(false);
   };
