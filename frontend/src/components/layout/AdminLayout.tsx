@@ -26,7 +26,7 @@ const AdminLayout = () => {
     { path: '/admin/semester', label: 'Quản lý học kỳ', icon: <LayoutDashboard size={20} /> },
     { path: '/admin/students', label: 'Quản lý Sinh viên', icon: <Users size={20} /> },
     { path: '/admin/instructors', label: 'Quản lý Giảng viên', icon: <Users size={20} /> },
-    { path: '/admin/courses', label: 'Quản lý Học phần', icon: <BookOpen size={20} /> },
+    { path: '/admin/course', label: 'Quản lý Học phần', icon: <BookOpen size={20} /> },
     { path: '/admin/schedule', label: 'Lên Thời khóa biểu', icon: <Calendar size={20} /> },
     { path: '/admin/settings', label: 'Cấu hình hệ thống', icon: <Settings size={20} /> },
   ];

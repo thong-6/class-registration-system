@@ -8,6 +8,7 @@ import PublicRoute from './components/auth/PublicRoute';
 import StudentLayout from './components/layout/StudentLayout';
 import { Divide } from 'lucide-react';
 import AdminSemestersPage from './features/admin/semester/AdminSemesterPage';
+import AdminCoursesPage from './features/admin/course/AdminCoursePage';
 
 
 const App = () => {
@@ -51,6 +52,7 @@ const App = () => {
       >
         <Route path='/admin' element={<div>Admin Home</div>}></Route>
       <Route path='/admin/semester' element={<AdminSemestersPage/>}></Route>
+      <Route path='/admin/course' element={<AdminCoursesPage/>}></Route>
       </Route>
 
       {/* <Route path="/admin" element={<AdminLayout />}>
