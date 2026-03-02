@@ -20,7 +20,7 @@ import lombok.Setter;
 @Setter
 public class Student {
     @Id
-    private Integer userId;
+    private Long userId;
     @OneToOne(fetch = FetchType.LAZY)
     @MapsId
     @JoinColumn(name = "user_id")
