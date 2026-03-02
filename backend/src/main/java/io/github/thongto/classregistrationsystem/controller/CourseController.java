@@ -1,4 +1,4 @@
-package io.github.thongto.classregistrationsystem.controller.admin;
+package io.github.thongto.classregistrationsystem.controller;
 
 import java.util.List;
 
@@ -8,9 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseDetailDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseRequestDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseResponseDTO;
+import io.github.thongto.classregistrationsystem.dto.CourseDTO;
 import io.github.thongto.classregistrationsystem.service.CourseService;
 import lombok.AllArgsConstructor;
 
@@ -29,33 +27,33 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping
-    public List<CourseResponseDTO> getAllCourse() {
+    public List<CourseDTO> getAllCourse() {
         return courseService.getAllCourse();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CourseDetailDTO> getACourse(@PathVariable Long id) {
-        CourseDetailDTO dto = courseService.getACourse(id);
+    public ResponseEntity<CourseDTO> getACourse(@PathVariable Long id) {
+        CourseDTO dto = courseService.getACourse(id);
         if (dto == null)
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<CourseDetailDTO> createACourse(@RequestBody CourseRequestDTO req) {
-        CourseDetailDTO created = courseService.createACourse(req);
+    public ResponseEntity<CourseDTO> createACourse(@RequestBody CourseDTO req) {
+        CourseDTO created = courseService.createACourse(req);
         return ResponseEntity.status(HttpStatus.CREATED).build();
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CourseDetailDTO> putMethodName(@PathVariable Long id, @RequestBody CourseRequestDTO req) {
-        CourseDetailDTO updated = courseService.updateACourse(id, req);
+    public ResponseEntity<CourseDTO> updateACourse(@PathVariable Long id, @RequestBody CourseDTO req) {
+        CourseDTO updated = courseService.updateACourse(id, req);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<CourseDetailDTO> deleteACourse(@PathVariable Long id) {
+    public ResponseEntity<CourseDTO> deleteACourse(@PathVariable Long id) {
         courseService.deleteACourse(id);
         return ResponseEntity.noContent().build();
     }

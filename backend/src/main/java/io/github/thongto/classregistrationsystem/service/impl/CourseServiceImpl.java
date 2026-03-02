@@ -4,9 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseDetailDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseRequestDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseResponseDTO;
+import io.github.thongto.classregistrationsystem.dto.CourseDTO;
 import io.github.thongto.classregistrationsystem.entity.Course;
 import io.github.thongto.classregistrationsystem.entity.Curriculum;
 import io.github.thongto.classregistrationsystem.entity.Department;
@@ -23,8 +21,8 @@ public class CourseServiceImpl implements CourseService {
     private final DepartmentRepository departmentRepository;
     private final CurriculumRepository curriculumRepository;
 
-    private CourseDetailDTO mapToDetailDTO(Course course) {
-        return new CourseDetailDTO(
+    private CourseDTO mapToDTO(Course course) {
+        return new CourseDTO(
                 course.getId(),
                 course.getCourseCode(),
                 course.getName(),
@@ -41,22 +39,29 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public List<CourseResponseDTO> getAllCourse() {
+    public List<CourseDTO> getAllCourse() {
         return courseRepository.findAll().stream().map(
-                s -> new CourseResponseDTO(
+                s -> new CourseDTO(
                         s.getId(),
                         s.getCourseCode(),
                         s.getName(),
                         s.getCredits(),
+                        s.getDepartment().getId(),
+                        s.getDepartment().getName(),
+                        s.getCurriculum().getId(),
+                        s.getCurriculum().getName(),
+                        s.getPrerequisites(),
                         s.getCorequisites(),
+                        s.getDescription(),
+                        s.getLearningOutcomes(),
                         s.getIsActive()))
                 .toList();
     }
 
     @Override
-    public CourseDetailDTO getACourse(Long id) {
+    public CourseDTO getACourse(Long id) {
         Course detail = courseRepository.findById(id).get();
-        return new CourseDetailDTO(
+        return new CourseDTO(
                 detail.getId(),
                 detail.getCourseCode(),
                 detail.getName(),
@@ -73,7 +78,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public CourseDetailDTO createACourse(CourseRequestDTO dto) {
+    public CourseDTO createACourse(CourseDTO dto) {
         Course newCourse = new Course();
         Department department = departmentRepository.findById(dto.getDepartmentId()).get();
         Curriculum curriculum = curriculumRepository.findById(dto.getCurriculumId()).get();
@@ -85,14 +90,14 @@ public class CourseServiceImpl implements CourseService {
         newCourse.setPrerequisites(dto.getPrerequisites());
         newCourse.setCorequisites(dto.getCorequisites());
         newCourse.setDescription(dto.getDescription());
-        newCourse.setLearningOutcomes(dto.getLearningOutComes());
+        newCourse.setLearningOutcomes(dto.getLearningOutcomes());
         newCourse.setIsActive(dto.getIsActive());
         courseRepository.save(newCourse);
-        return mapToDetailDTO(newCourse);
+        return mapToDTO(newCourse);
     }
 
     @Override
-    public CourseDetailDTO updateACourse(Long id, CourseRequestDTO dto) {
+    public CourseDTO updateACourse(Long id, CourseDTO dto) {
         Department department = departmentRepository.findById(dto.getDepartmentId()).get();
         Curriculum curriculum = curriculumRepository.findById(dto.getCurriculumId()).get();
         Course course = courseRepository.findById(id).get();
@@ -104,10 +109,10 @@ public class CourseServiceImpl implements CourseService {
         course.setPrerequisites(dto.getPrerequisites());
         course.setCorequisites(dto.getCorequisites());
         course.setDescription(dto.getDescription());
-        course.setLearningOutcomes(dto.getLearningOutComes());
+        course.setLearningOutcomes(dto.getLearningOutcomes());
         course.setIsActive(dto.getIsActive());
         courseRepository.save(course);
-        return mapToDetailDTO(course);
+        return mapToDTO(course);
     }
 
     @Override

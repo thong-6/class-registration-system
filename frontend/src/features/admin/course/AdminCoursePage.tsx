@@ -3,7 +3,9 @@ import { Plus, Search, Download } from 'lucide-react';
 import { Course } from '../../../type/course';
 import CourseTable from './component/CourseTable';
 import CourseModal from './component/CourseModal';
-import { deleteACourse, getAllCourse } from '../../../services/courseService';
+import { createACourse, deleteACourse, getAllCourse, updateACourse } from '../../../services/courseService';
+import { getAllDepartment } from '../../../services/departmentService';
+import { getAllCurriculum } from '../../../services/curriculumService';
 
 // Mock Data cho Dropdowns (Call API thực tế)
 const mockDepartments = [
@@ -51,21 +53,28 @@ const initialCourses: Course[] = [
 
 const AdminCoursesPage: React.FC = () => {
   const [courses, setCourses] = useState<Course[]>(initialCourses);
+  const [department, setDepartment] = useState(mockDepartments);
+  const [curriculum, setCurriculum] = useState(mockCurriculums);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
 
-  const fetchCourses = async () =>{
+  const fetch = async () =>{
     try {
-      const data = await getAllCourse();
-      setCourses(data);
+      const dataCourse = await getAllCourse();
+      setCourses(dataCourse);
+      const dataDepartment = await getAllDepartment();
+      const dataCurriculum = await getAllCurriculum();
+      console.log(dataCourse);
+      setDepartment(dataDepartment);
+      setCurriculum(dataCurriculum);
     } catch (error) {
       console.error(error);
-      alert('Cannot download courses');
+      alert('Cannot download data');
     }
   }
   useEffect(()=>{
-    fetchCourses();
+    fetch();
   }, []);
   const handleOpenAddNew = () => {
     setEditingCourse(null);
@@ -89,10 +98,10 @@ const AdminCoursesPage: React.FC = () => {
     }
   };
 
-  const handleSaveData = (formData: Partial<Course>, id?: number) => {
+  const handleSaveData = async (formData: Partial<Course>, id?: number) => {
     // Tìm tên Department và Curriculum để hiển thị đẹp trên bảng sau khi lưu
-    const deptName = mockDepartments.find(d => d.id === formData.departmentId)?.name;
-    const currName = mockCurriculums.find(c => c.id === formData.curriculumId)?.name;
+    const deptName = department.find(d => d.id === formData.departmentId)?.name;
+    const currName = curriculum.find(c => c.id === formData.curriculumId)?.name;
     
     const preparedData = {
       ...formData,
@@ -101,10 +110,21 @@ const AdminCoursesPage: React.FC = () => {
     } as Course;
 
     if (id) {
-      setCourses(courses.map(c => c.id === id ? { ...preparedData, id } : c));
+      try {
+        await updateACourse(id, formData);
+        console.log({id, formData})
+        setCourses(courses.map(c => c.id === id ? { ...preparedData } : c));
+      } catch (error) {
+        alert('Cannot edit this course');
+      }
     } else {
-      const newId = Math.floor(Math.random() * 10000); 
-      setCourses([...courses, { ...preparedData, id: newId }]);
+      try {
+        const created = await createACourse(formData);
+        setCourses([...courses, created]);
+      } catch (error) {
+        alert('Cannot create course now');
+      }
+      
     }
     setIsModalOpen(false);
   };
@@ -154,7 +174,7 @@ const AdminCoursesPage: React.FC = () => {
         {/* Bộ lọc mở rộng (Có thể thêm vào sau) */}
         <select className="block w-full md:w-48 border border-gray-300 rounded-lg py-2 px-3 bg-white focus:ring-indigo-500 sm:text-sm text-gray-700">
           <option value="">Tất cả các Khoa</option>
-          {mockDepartments.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
+          {department.map(d => <option key={d.id} value={d.id}>{d.name}</option>)}
         </select>
       </div>
 
@@ -169,8 +189,8 @@ const AdminCoursesPage: React.FC = () => {
         onClose={() => setIsModalOpen(false)}
         onSave={handleSaveData}
         initialData={editingCourse}
-        departments={mockDepartments}
-        curriculums={mockCurriculums}
+        departments={department}
+        curriculums={curriculum}
       />
     </div>
   );

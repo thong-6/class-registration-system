@@ -2,18 +2,16 @@ package io.github.thongto.classregistrationsystem.service;
 
 import java.util.List;
 
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseDetailDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseRequestDTO;
-import io.github.thongto.classregistrationsystem.dto.courseDTO.CourseResponseDTO;
+import io.github.thongto.classregistrationsystem.dto.CourseDTO;
 
 public interface CourseService {
-    List<CourseResponseDTO> getAllCourse();
+    List<CourseDTO> getAllCourse();
 
-    CourseDetailDTO getACourse(Long id);
+    CourseDTO getACourse(Long id);
 
-    CourseDetailDTO createACourse(CourseRequestDTO dto);
+    CourseDTO createACourse(CourseDTO dto);
 
-    CourseDetailDTO updateACourse(Long id, CourseRequestDTO dto);
+    CourseDTO updateACourse(Long id, CourseDTO dto);
 
     void deleteACourse(Long id);
 }
